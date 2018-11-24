@@ -17,7 +17,7 @@ public class CustomerMaintenanceDA {
     private String host = "jdbc:derby://localhost:1527/agile";
     private String user = "nbuser";
     private String password = "nbuser";
-    private String tableName = "CUSTOMER";
+    private String tableName = "CORPORATE_CUSTOMER";
     private Connection conn;
     private PreparedStatement stmt;
     private ResultSet rs;
@@ -32,7 +32,7 @@ public class CustomerMaintenanceDA {
              stmt = conn.prepareStatement(sqlQueryStr);
              rs = stmt.executeQuery();
              while (rs.next())
-                 CMIP.add(new CustomerMaintenance(rs.getString("CUST_ID"),rs.getString("CUST_NAME"),rs.getString("CUST_CATEGORY"),rs.getString("CUST_GENDER").charAt(0),rs.getDate("CUST_DOB"), rs.getString("CUST_PHONE"),rs.getString("CUST_ADDRESS"),rs.getDouble("CUST_LIMIT")));
+                 CMIP.add(new CustomerMaintenance(rs.getString("CUST_ID"),rs.getString("CUST_NAME"),rs.getString("CUST_COMPANY"),rs.getString("CUST_GENDER").charAt(0),rs.getDate("CUST_DOB"), rs.getString("CUST_PHONE"),rs.getString("CUST_ADDRESS"),rs.getDouble("CUST_LIMIT")));
          }catch(SQLException ex){
              ex.getMessage();
          }
