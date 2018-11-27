@@ -55,9 +55,7 @@ public class PickupOrder extends JFrame {
       , "Pick Up Date","Pick Up Time" ,"Address", "Pick Up Method", "Payment Method", "Status"},0); 
     private JTable table2 = new JTable(tableModel2);
     JScrollPane scrollPane2 = new JScrollPane(table2);
-    private ResultSet rsBook = null;
-    
-       
+      
     public PickupOrder(PickUpOrderDomain[] arr){
         table = new JTable();
         table.setRowSelectionAllowed(true);

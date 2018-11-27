@@ -198,9 +198,5 @@ public class PickUpOrderDomain {
     @Override
     public String toString() {
         return "PickUpOrderDomain{" + "orderId=" + orderId + ", productName=" + productName + ", quantity=" + quantity + ", custName=" + custName + ", custContact=" + custContact + ", pickUpDate=" + pickUpDate + ", pickUpTime=" + pickUpTime + ", address=" + address + ", pickUpMethod=" + pickUpMethod + ", paymentMethod=" + paymentMethod + ", status=" + status + '}';
-    }
-
-    
-    
-    
+    }         
 }
