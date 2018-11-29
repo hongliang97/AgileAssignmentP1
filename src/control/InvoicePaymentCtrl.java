@@ -4,11 +4,25 @@
  * and open the template in the editor.
  */
 package control;
+import da.InvoicePaymentDA;
+import domain.Invoicepayment;
 
 /**
  *
  * @author liang
  */
 public class InvoicePaymentCtrl {
+    private InvoicePaymentDA ipDA;
     
+    public InvoicePaymentCtrl(){
+        ipDA = new InvoicePaymentDA();
 }
+    public void addRecord (Invoicepayment ip){
+        ipDA.addRecord(ip);
+    }
+    
+    public Invoicepayment AddID(){
+        return ipDA.invID();
+    }
+}
+

@@ -4,20 +4,18 @@
  * and open the template in the editor.
  */
 package da;
-import domain.InvoicePayment;
+import domain.Invoicepayment;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import domain.CustomerMaintenance;
-import domain.Product;
-import control.CustomerMaintenanceCtrl;
-import control.ProductCtrl;
+import javax.swing.JOptionPane;
 /**
  *
  * @author liang
  */
 public class InvoicePaymentDA {
+    
     private String host = "jdbc:derby://localhost:1527/agile";
     private String user = "nbuser";
     private String password = "nbuser";
@@ -26,28 +24,24 @@ public class InvoicePaymentDA {
     private PreparedStatement stmt;
     private ResultSet rs;
     private String sqlQueryStr = "SELECT * FROM " + tableName;
-    private CustomerMaintenanceCtrl CustControl;
-    private ProductCtrl prodControl;
     
     public InvoicePaymentDA(){
     createConnection();
-    CustControl = new CustomerMaintenanceCtrl();
-    prodControl = new ProductCtrl();
-    }
-    public ArrayList<InvoicePayment> getInv() {
-         ArrayList<InvoicePayment> IP = new ArrayList<InvoicePayment>();
+}
+    public ArrayList<Invoicepayment> getStaff() {
+         ArrayList<Invoicepayment> invoice = new ArrayList<Invoicepayment>();
          try{
              stmt = conn.prepareStatement(sqlQueryStr);
              rs = stmt.executeQuery();
-             CustomerMaintenance cm = CustControl.selectRecord(String name);
              while (rs.next())
-                 IP.add(new InvoicePayment(rs.getString("INV_ID"),rs.getString("CUST_ID"),rs.getString("PROD_ID"),rs.getInt("QUANTITY"),rs.getDouble("PRICE")));
+                 invoice.add(new Invoicepayment(rs.getString("INV_ID"),rs.getString("CUST_NAME"),rs.getString("PROD_NAME"),rs.getInt("QUANTITY"),rs.getDouble("TOTAL_PRICE"),
+                         rs.getString("DATE_GENERATE"),rs.getString("STATUS"),rs.getString("Purpose")));
          }catch(SQLException ex){
              ex.getMessage();
          }
-         return CMIP;
+         return invoice;
     }
-    private void createConnection() {
+     private void createConnection() {
         try {
             conn = DriverManager.getConnection(host, user, password);
             System.out.println("***TRACE: Connection established.");
@@ -55,25 +49,58 @@ public class InvoicePaymentDA {
             System.out.print("ERRROR");
         }
     }
-    
-    public Queue getRecord(String name){
-        String queryStr = "SELECT * FROM " + tableName + " WHERE CUST_NAME = ?";
+     
+     public void addRecord(Invoicepayment invoice){
         
-        Queue<CustomerMaintenance> q = new LinkedList<>();
-        CustomerMaintenance CMIP = null;
+        String insertStr = "INSERT INTO "+ tableName + "(INV_ID, CUST_NAME, PROD_NAME, QUANTITY, TOTAL_PRICE, DATE_GENERATE, STATUS, PURPOSE)"+" VALUES(?,?,?,?,?,?,?,?)";
         try{
-            stmt = conn.prepareStatement(queryStr);
-            stmt.setString(1, name);            
-            ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
-                CMIP= new CustomerMaintenance(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4).charAt(0),rs.getDate(5),rs.getString(6),rs.getString(7),rs.getDouble(8));
-            q.add(CMIP);
-            }
-        }catch (SQLException ex){
-            System.out.println("Error Database");
+            stmt = conn.prepareStatement(insertStr);
+            stmt.setString(1,invoice.getInv_ID());
+            stmt.setString(2,invoice.getCustomer());
+            stmt.setString(3,invoice.getProduct());
+            stmt.setString(4,String.valueOf(invoice.getQuantity()));
+            stmt.setString(5,String.valueOf(invoice.getPrice()));
+            stmt.setString(6,invoice.getDate_generate());
+            stmt.setString(7,invoice.getStatus());
+            stmt.setString(8,invoice.getPurpose());
+            stmt.executeUpdate();
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return q;
     }
-    
-   
+     
+     public Invoicepayment invID(){
+         String queryStr="SELECT * FROM " + tableName + " ORDER BY 'ROW_NUMBER()'";
+        Invoicepayment ip = null;
+        try {
+            stmt = conn.prepareStatement(queryStr);
+           
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                ip = new Invoicepayment(rs.getString(1));
+                
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return ip;
     }
+     public Invoicepayment getRecord(String id) {
+        String queryStr = "SELECT * FROM " + tableName + "  WHERE INV_ID = ?";
+        Invoicepayment ip = null;
+        try {
+            stmt = conn.prepareStatement(queryStr);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+               ip = new Invoicepayment(rs.getString(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getDouble(5),rs.getString(6),rs.getString(7),rs.getString(8));  
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return ip;
+    }
+     }
+
