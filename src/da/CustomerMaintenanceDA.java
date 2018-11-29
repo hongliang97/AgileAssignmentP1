@@ -85,7 +85,36 @@ public class CustomerMaintenanceDA {
             System.out.print("Error at selectRecord");
         }
         return cm;
-    } 
+    }
+    
+    public ArrayList<CustomerMaintenance> getCustRecord() {
+
+        ArrayList<CustomerMaintenance> cm = new ArrayList<CustomerMaintenance>();
+        String queryStr="SELECT * FROM " + tableName;
+        try {
+            stmt = conn.prepareStatement(queryStr);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                cm.add(getCurrentRecord());
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+
+        return cm;
+    }
+
+    public CustomerMaintenance getCurrentRecord() {
+       CustomerMaintenance cm = null;
+        
+        try {
+           
+            cm = new CustomerMaintenance(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4).charAt(0),rs.getDate(5),rs.getString(6),rs.getString(7),rs.getDouble(8));
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return cm;
+    }
     
    
     }

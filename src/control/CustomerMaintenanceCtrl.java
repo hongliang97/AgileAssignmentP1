@@ -41,4 +41,12 @@ public class CustomerMaintenanceCtrl implements CustomerInterface{
     public CustomerMaintenance selectRecord(String name){
         return CMIPDA.selectRecord(name);
     }
+    
+    public CustomerMaintenance CurrentRecord() {
+        return CMIPDA.getCurrentRecord();
+    }
+
+    public ArrayList<CustomerMaintenance> getCustRecord(){
+        return CMIPDA.getCustRecord();
+}
 }
