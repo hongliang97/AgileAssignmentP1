@@ -108,11 +108,11 @@ public class PickupOrder extends JFrame {
                         check = 1;
                         if (JOptionPane.showConfirmDialog(null, "Are you sure want to update Order ID: " + str + "?", "Update Status",JOptionPane.YES_NO_OPTION) == 0){
 
-                            if (arr[i].getStatus().equals("Done")){
-                                arr[i].setStatus("Not Yet");
+                            if (arr[i].getStatus().equals("Collected")){
+                                arr[i].setStatus("Uncollect");
                             }
                             else
-                                arr[i].setStatus("Done");
+                                arr[i].setStatus("Collected");
                             JOptionPane.showMessageDialog(null, "Status Updated!");
                         }
                         
@@ -121,14 +121,17 @@ public class PickupOrder extends JFrame {
                 }
                 if (check != 1)
                     JOptionPane.showMessageDialog(null, "Wrong Order Id entered!");
-                dispose();
-                PickupOrder pick = new PickupOrder(newArr);
-                pick.setVisible(true);
-                pick.setTitle("List of Today Orders Pick Up");
-                pick.setLocationRelativeTo(null);
-                pick.setSize(900, 550);
-                pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 
+                else{
+                    dispose();
+                
+                    PickupOrder pick = new PickupOrder(newArr);
+                    pick.setVisible(true);
+                    pick.setTitle("List of Today Orders Pick Up");
+                    pick.setLocationRelativeTo(null);
+                    pick.setSize(900, 550);
+                    pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }
             }
         });
            
@@ -172,13 +175,17 @@ public class PickupOrder extends JFrame {
     }
     public static void main(String args[]){
         PickUpOrderDomain[] arr = new PickUpOrderDomain[]{new PickUpOrderDomain("O0001","Rose",2,"Lim Chun Chun","012-3456789"
-       ,"2018-11-27" ,"12:11 pm", "No.01, Jalan Bla...", "Pick Up", "Pay When Pick Up", "Not Yet"), 
+       ,"2018-11-29" ,"12:11 pm", "No.01, Jalan Bla...", "Pick Up", "Cash", "Collected"), 
             new PickUpOrderDomain("O0002","Orchid",3,"Bryan Loh","012-3456789"
-       ,"2018-11-27" ,"13:30 pm" ,"No.02, Jalan Bla...", "Pick Up", "Pay When Pick Up", "Not Yet"), 
+       ,"2018-11-29" ,"13:30 pm" ,"No.02, Jalan Bla...", "Pick Up", "Cash", "Uncollect"), 
             new PickUpOrderDomain("O0003","Rose",2,"Lim Chun Chun","012-3456789"
-       ,"2018-11-27" ,"12:11 pm", "No.03, Jalan Bla...", "Delivery", "Cash on Delivery", "Not Yet"), 
+       ,"2018-11-29" ,"12:11 pm", "No.03, Jalan Bla...", "Delivery", "Cash", "Collected"), 
             new PickUpOrderDomain("O0004","Orchid",3,"Bryan Loh","012-3456789"
-       ,"2018-11-27" ,"13:30 pm" ,"No.04, Jalan Bla...", "Delivery", "Cash on Delivery", "Done")};
+       ,"2018-11-29" ,"13:30 pm" ,"No.04, Jalan Bla...", "Delivery", "Cash", "Collected"),
+            new PickUpOrderDomain("O0005","Orchid",3,"Bryan Loh","012-3456789"
+       ,"2018-11-29" ,"13:30 pm" ,"No.04, Jalan Bla...", "Pick Up", "Credit Card", "Collected"),
+            new PickUpOrderDomain("O0006","Orchid",3,"Bryan Loh","012-3456789"
+       ,"2018-11-29" ,"13:30 pm" ,"No.04, Jalan Bla...", "Delivery", "Credit Card", "Uncollect")};
         
         PickupOrder pick = new PickupOrder(arr);
         pick.setVisible(true);
