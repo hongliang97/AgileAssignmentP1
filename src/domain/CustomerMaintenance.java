@@ -16,12 +16,12 @@ public class CustomerMaintenance implements Serializable{
     private String custName;
     private String company;
     private char gender;
-    private Date dob;
+    private String dob;
     private String custPhone;
     private String address;
     private double creditLimit;
 
-    public CustomerMaintenance(String custID, String custName, String company, char gender, Date dob, String custPhone, String address, double creditLimit) {
+    public CustomerMaintenance(String custID, String custName, String company, char gender, String dob, String custPhone, String address, double creditLimit) {
         this.custID = custID;
         this.custName = custName;
         this.company = company;
@@ -32,6 +32,14 @@ public class CustomerMaintenance implements Serializable{
         this.creditLimit = creditLimit;
     }
 
+    public CustomerMaintenance(){
+        
+    }
+    
+    public CustomerMaintenance(String id){
+        this.custID = id;
+    }
+    
     public String getCustID() {
         return custID;
     }
@@ -64,11 +72,11 @@ public class CustomerMaintenance implements Serializable{
         this.gender = gender;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 

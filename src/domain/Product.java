@@ -17,11 +17,19 @@ public class Product {
     private double prod_price;
     private String prod_detail;
 
+    public Product(){
+        
+    }
+    
     public Product(String prod_ID, String prod_name, double prod_price, String prod_detail) {
         this.prod_ID = prod_ID;
         this.prod_name = prod_name;
         this.prod_price = prod_price;
         this.prod_detail = prod_detail;
+    }
+    
+    public Product (double prod_price){
+        this.prod_price = prod_price;
     }
 
     public String getProd_ID() {

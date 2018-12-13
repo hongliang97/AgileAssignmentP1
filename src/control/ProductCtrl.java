@@ -24,10 +24,12 @@ public class ProductCtrl {
         return PDA.getProd();
     }
       
-    /*public ArrayList<Product> getProdRecord(){
+    public ArrayList<Product> getProdRecord(){
         return PDA.getProdRecord();
-}*/
-    
+}
+    public Product selectRecord(String id){
+        return (Product) PDA.getRecord(id);
+    }
     
     public Queue getProdInfo() {
        Queue prod = PDA.getRecord(name);

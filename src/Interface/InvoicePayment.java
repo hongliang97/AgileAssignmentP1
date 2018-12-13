@@ -9,7 +9,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import domain.Invoicepayment;
 import da.InvoicePaymentDA;
 import control.InvoicePaymentCtrl;
 import da.CustomerMaintenanceDA;
@@ -21,7 +20,6 @@ import control.ProductCtrl;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import Interface.ConfirmInvoicePayment;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -51,7 +49,7 @@ public class InvoicePayment extends JFrame{
     private ArrayList<CustomerMaintenance> corporateDetail;
     private ArrayList <Product> prodList;
     private JTextField id = new JTextField();
-    private Invoicepayment invPay;
+    private domain.InvoicePayment invPay;
     private CustomerMaintenance cm;
     private Product prod;
     private InvoicePaymentDA IPDA;
@@ -87,7 +85,7 @@ public class InvoicePayment extends JFrame{
         add(panel2,BorderLayout.SOUTH);
         btnCancel.addActionListener(new CancelListener());
         btnConfirm.addActionListener(new ConfirmListener());
-        Invoicepayment ip = IPC.AddID();
+        domain.InvoicePayment ip = IPC.AddID();
         String code = ip.getCode();
         String new_id = "I000" + (Integer.parseInt(code.substring(2,code.length()))+1);
         id.setText(new_id); 
@@ -116,19 +114,16 @@ public class InvoicePayment extends JFrame{
         
         private class ConfirmListener implements ActionListener{
         public void actionPerformed (ActionEvent e){
-            String Inv_id = id.getText();
             SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date date = new java.util.Date();
             java.util.Date sqlDate = new java.util.Date(date.getTime());
             String aa = SDF.format(sqlDate);
             String item = (String) listProdName.getSelectedItem();
            
-           
-            
             int amt= 0;
             Double totalPrice = null;
             Double itemPrice;
-            Invoicepayment IP;
+            domain.InvoicePayment IP;
            
             amt = Integer.parseInt(amount.getText());
             if(item == "Orchids"){
@@ -140,7 +135,7 @@ public class InvoicePayment extends JFrame{
             }else{
                 
             }
-            IP = new Invoicepayment (id.getText(),listCorporateName.getSelectedItem().toString(),listProdName.getSelectedItem().toString(),Integer.parseInt(amount.getText()),totalPrice, aa ,"PENDING",purpose.getText());
+            IP = new domain.InvoicePayment (id.getText(),listCorporateName.getSelectedItem().toString(),listProdName.getSelectedItem().toString(),Integer.parseInt(amount.getText()),totalPrice, aa ,"PENDING",purpose.getText());
             IPDA.addRecord(IP);
             JOptionPane.showMessageDialog(null, "TotalPrice of the items : RM " + totalPrice +". The receipt will print out.", "Success", JOptionPane.INFORMATION_MESSAGE);
             printReport();

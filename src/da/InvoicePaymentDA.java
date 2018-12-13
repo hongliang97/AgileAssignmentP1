@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package da;
-import domain.Invoicepayment;
+import domain.InvoicePayment;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,13 +28,13 @@ public class InvoicePaymentDA {
     public InvoicePaymentDA(){
     createConnection();
 }
-    public ArrayList<Invoicepayment> getStaff() {
-         ArrayList<Invoicepayment> invoice = new ArrayList<Invoicepayment>();
+    public ArrayList<InvoicePayment> getStaff() {
+         ArrayList<InvoicePayment> invoice = new ArrayList<InvoicePayment>();
          try{
              stmt = conn.prepareStatement(sqlQueryStr);
              rs = stmt.executeQuery();
              while (rs.next())
-                 invoice.add(new Invoicepayment(rs.getString("INV_ID"),rs.getString("CUST_NAME"),rs.getString("PROD_NAME"),rs.getInt("QUANTITY"),rs.getDouble("TOTAL_PRICE"),
+                 invoice.add(new InvoicePayment(rs.getString("INV_ID"),rs.getString("CUST_NAME"),rs.getString("PROD_NAME"),rs.getInt("QUANTITY"),rs.getDouble("TOTAL_PRICE"),
                          rs.getString("DATE_GENERATE"),rs.getString("STATUS"),rs.getString("Purpose")));
          }catch(SQLException ex){
              ex.getMessage();
@@ -50,7 +50,7 @@ public class InvoicePaymentDA {
         }
     }
      
-     public void addRecord(Invoicepayment invoice){
+     public void addRecord(InvoicePayment invoice){
         
         String insertStr = "INSERT INTO "+ tableName + "(INV_ID, CUST_NAME, PROD_NAME, QUANTITY, TOTAL_PRICE, DATE_GENERATE, STATUS, PURPOSE)"+" VALUES(?,?,?,?,?,?,?,?)";
         try{
@@ -69,16 +69,16 @@ public class InvoicePaymentDA {
         }
     }
      
-     public Invoicepayment invID(){
+     public InvoicePayment invID(){
          String queryStr="SELECT * FROM " + tableName + " ORDER BY 'ROW_NUMBER()'";
-        Invoicepayment ip = null;
+        InvoicePayment ip = null;
         try {
             stmt = conn.prepareStatement(queryStr);
            
             ResultSet rs = stmt.executeQuery();
             
             if(rs.next()) {
-                ip = new Invoicepayment(rs.getString(1));
+                ip = new InvoicePayment(rs.getString(1));
                 
             }
         } catch (SQLException ex) {
@@ -86,16 +86,16 @@ public class InvoicePaymentDA {
         }
         return ip;
     }
-     public Invoicepayment getRecord(String id) {
+     public InvoicePayment getRecord(String id) {
         String queryStr = "SELECT * FROM " + tableName + "  WHERE INV_ID = ?";
-        Invoicepayment ip = null;
+        InvoicePayment ip = null;
         try {
             stmt = conn.prepareStatement(queryStr);
             
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-               ip = new Invoicepayment(rs.getString(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getDouble(5),rs.getString(6),rs.getString(7),rs.getString(8));  
+               ip = new InvoicePayment(rs.getString(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getDouble(5),rs.getString(6),rs.getString(7),rs.getString(8));  
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);

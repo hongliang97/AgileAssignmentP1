@@ -5,7 +5,7 @@
  */
 package control;
 import da.InvoicePaymentDA;
-import domain.Invoicepayment;
+import domain.InvoicePayment;
 
 /**
  *
@@ -17,11 +17,11 @@ public class InvoicePaymentCtrl {
     public InvoicePaymentCtrl(){
         ipDA = new InvoicePaymentDA();
 }
-    public void addRecord (Invoicepayment ip){
+    public void addRecord (InvoicePayment ip){
         ipDA.addRecord(ip);
     }
     
-    public Invoicepayment AddID(){
+    public InvoicePayment AddID(){
         return ipDA.invID();
     }
 }
