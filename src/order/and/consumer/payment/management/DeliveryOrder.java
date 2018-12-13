@@ -1,9 +1,11 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package order.and.consumer.payment.management;
+
 import da.OrderDA;
 import da.OrderPickUpManageDA;
 import domain.CustOrder;
@@ -39,18 +41,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lim Yb
  */
-public class PickupOrder extends JFrame {
+public class DeliveryOrder extends JFrame {
    // GridBagLayout gridbag = new GridBagLayout();
    // GridBagConstraints c = new GridBagConstraints();
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat timeStampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
     Date timeStamp = new Date();
-    private JLabel jlbDate = new JLabel("Order Pick Up of Date: " + dateFormat.format(date));
-    private JButton jbDelivery = new JButton("Delivery");
+    private JLabel jlbDate = new JLabel("Order (Delivery) of Date: " + dateFormat.format(date));
     private JButton jbUpdate = new JButton("Update Status");
     private JButton jbBack = new JButton("Back");
     private JLabel total = new JLabel();
+    private JLabel total2 = new JLabel();
     private DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Order id","Product Name","Customer Name"
      , "Pick Up Date", "Pick Up Time", "Address", "Payment Method", "Status", "Time Stamp"},0); 
     private JTable table = new JTable(tableModel);
@@ -61,7 +63,7 @@ public class PickupOrder extends JFrame {
     CustOrder orderDomain = new CustOrder();
     OrderDA orderDa = new OrderDA();
       
-    public PickupOrder(){
+    public DeliveryOrder(){
         table = new JTable();
         table.setRowSelectionAllowed(true);
        // table2 = new JTable();
@@ -83,10 +85,9 @@ public class PickupOrder extends JFrame {
       //  pn1.add(pn0);
         pn1.add(new JSeparator());
         pn4.add(total);
-        pn2.add(new JLabel("Orders (Pick Up)"));
+        pn2.add(new JLabel("Orders to be Delivery (Sorted according most efficient route)"));
         pn2.add(scrollPane);       
         pn2.add(pn4);
-        pn6.add(jbDelivery);
         pn6.add(jbUpdate);
         pn6.add(jbBack);
         
@@ -102,17 +103,17 @@ public class PickupOrder extends JFrame {
                 String str = " ";
                 str = JOptionPane.showInputDialog(null, "Enter Order Id: ");
                 ResultSet rsOrder = null;
-                ResultSet rs2 = null;
+                ResultSet rs = null;
                 try{
                     rsOrder = orderDa.getSelectedQuery(str);
-                    rs2 = (ResultSet) da.retrieveSelected(str);  
+                    rs = (ResultSet) da.retrieveSelected(str);  
                     if (rsOrder.next()){
                         orderDomain = new CustOrder(rsOrder.getInt(1),rsOrder.getString(2),rsOrder.getString(3),rsOrder.getString(4),rsOrder.getString(5),
                                     rsOrder.getString(6),rsOrder.getString(7),rsOrder.getString(8),rsOrder.getString(9),rsOrder.getString(10),rsOrder.getString(11),
                                     rsOrder.getString(12),rsOrder.getString(13),rsOrder.getInt(14));
                         if (JOptionPane.showConfirmDialog(null, "Are you sure want to update Order ID: " + str + "?", "Update Status",JOptionPane.YES_NO_OPTION) == 0){
-                            if (rs2.next()){                   
-                                domain = new PickUpOrderDomain(orderDomain, rs2.getString(2), rs2.getString(3));
+                            if (rs.next()){                   
+                                domain = new PickUpOrderDomain(orderDomain, rs.getString(2), rs.getString(3));
                                 da.update(domain.getOrder().getOrderId(), timeStampFormat.format(timeStamp));                               
                             }else{
                                  domain = new PickUpOrderDomain(orderDomain, "Done", timeStampFormat.format(timeStamp));
@@ -121,19 +122,20 @@ public class PickupOrder extends JFrame {
                             JOptionPane.showMessageDialog(null, "Status Updated!");
                                 
                                 dispose();                  
-                                PickupOrder pick = new PickupOrder();
+                                DeliveryOrder pick = new DeliveryOrder();
                                 pick.setVisible(true);
-                                pick.setTitle("List of Today Orders Pick Up");
+                                pick.setTitle("List of Today Orders Delivery");
                                 pick.setLocationRelativeTo(null);
                                 pick.setSize(1000, 550);
                                 pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         }else{
+                            
                             JOptionPane.showMessageDialog(null, "Record not updated!");
                         }
                     }
                     if (!str.equals(" ")){
-                         JOptionPane.showMessageDialog(null, "This order id doesn't exist!");
-                    }                    
+                        JOptionPane.showMessageDialog(null, "This order id doesn't exist!");
+                    }
                     
                 }catch(Exception ex){
                     ex.getMessage();
@@ -141,22 +143,17 @@ public class PickupOrder extends JFrame {
             }
         });
         
-        jbDelivery.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                dispose();                  
-                DeliveryOrder pick = new DeliveryOrder();
-                pick.setVisible(true);
-                pick.setTitle("List of Today Orders Delivery");
-                pick.setLocationRelativeTo(null);
-                pick.setSize(1000, 550);
-                pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            }
-        });
-       
-    
+           
         jbBack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 dispose();
+                PickupOrder pick = new PickupOrder();
+                pick.setVisible(true);
+                pick.setTitle("List of Today Orders Pick Up");
+                pick.setLocationRelativeTo(null);
+                pick.setSize(1000, 550);
+                pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+              
             }
         });
        
@@ -168,13 +165,17 @@ public class PickupOrder extends JFrame {
             for (int k=0; k < o; k++){
                 tableModel.removeRow(0);
             }
-        ResultSet rsOrder = null;
-        ResultSet rs = null;
-        try{
-        rsOrder = orderDa.getQuery();
+       
         
-        
-        while (rsOrder.next()){
+        for (int i = 51000; i < 54000; i+=1000){
+            ResultSet rsOrder = null;
+            ResultSet rs = null;
+            orderDomain = null;
+            domain = null;
+            try{
+                rsOrder = orderDa.getQuery();
+                rs = (ResultSet) da.retrieve();
+            while (rsOrder.next()){
             orderDomain = new CustOrder(rsOrder.getInt(1),rsOrder.getString(2),rsOrder.getString(3),rsOrder.getString(4),rsOrder.getString(5),
             rsOrder.getString(6),rsOrder.getString(7),rsOrder.getString(8),rsOrder.getString(9),rsOrder.getString(10),rsOrder.getString(11),
             rsOrder.getString(12),rsOrder.getString(13),rsOrder.getInt(14));
@@ -185,24 +186,27 @@ public class PickupOrder extends JFrame {
                     domain = new PickUpOrderDomain(orderDomain, rs.getString(2), rs.getString(3));
                 }
             }
-            if (orderDomain.getPickupDate().equals(dateFormat.format(date)) && orderDomain.getPickupMethod().equals("Pick Up")){             
-                tableModel.addRow(new Object[]{domain.getOrder().getOrderId(),domain.getOrder().getProductName(),domain.getOrder().getName()
-                ,domain.getOrder().getPickupDate(),domain.getOrder().getPickupTime(),domain.getNewAddress(),domain.getOrder().getMethod(),domain.getStatus(), domain.getTimeStamp()});
+            if (orderDomain.getPickupDate().equals(dateFormat.format(date)) && orderDomain.getPickupMethod().equals("Delivery")){
+                if (orderDomain.getZip().equals(String.format("%d", i))){                  
+                    tableModel.addRow(new Object[]{domain.getOrder().getOrderId(),domain.getOrder().getProductName(),domain.getOrder().getName()
+                    ,domain.getOrder().getPickupDate(),domain.getOrder().getPickupTime(),domain.getNewAddress(),domain.getOrder().getMethod(),domain.getStatus(), domain.getTimeStamp()});
+                }
             }
         }
         }catch(SQLException ex){
             ex.getMessage();
-            JOptionPane.showMessageDialog(null, "Errorrrr");
+        }
         }
                 total.setText("Total Record: " + tableModel.getRowCount());
     }
     public static void main(String args[]){       
-        PickupOrder pick = new PickupOrder();
+        DeliveryOrder pick = new DeliveryOrder();
         pick.setVisible(true);
-        pick.setTitle("List of Today Orders Pick Up");
+        pick.setTitle("List of Today Orders Delivery");
         pick.setLocationRelativeTo(null);
         pick.setSize(1000, 550);
         pick.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
     }
+    
 }

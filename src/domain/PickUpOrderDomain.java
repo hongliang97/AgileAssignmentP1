@@ -12,114 +12,48 @@ import java.util.Objects;
  * @author Lim Yb
  */
 public class PickUpOrderDomain {
-    private String orderId;
-    private String productName;
-    private int quantity;
-    private String custName;
-    private String custContact;
-    private String pickUpDate;
-    private String pickUpTime;
-    private String address;
-    private String pickUpMethod;
-    private String paymentMethod;
-    private String status;
+    private CustOrder order;
+    private String newAddress = "";
+    private String status = "";
+    private String timeStamp = "";
     
     public PickUpOrderDomain(){
         
     }
 
-    public PickUpOrderDomain(String orderId, String productName, int quantity, String custName, String custContact, String pickUpDate, String pickUpTime, String address, String pickUpMethod, String paymentMethod, String status) {
-        this.orderId = orderId;
-        this.productName = productName;
-        this.quantity = quantity;
-        this.custName = custName;
-        this.custContact = custContact;
-        this.pickUpDate = pickUpDate;
-        this.pickUpTime = pickUpTime;
-        this.address = address;
-        this.pickUpMethod = pickUpMethod;
-        this.paymentMethod = paymentMethod;
+    public PickUpOrderDomain(CustOrder order) {
+        this.order = order;
+        this.newAddress = order.getAddress() + ", " + order.getZip() + ", " + order.getCity() + " " + order.getState();
+    }
+
+    public PickUpOrderDomain(CustOrder order, String status) {
+        this.order = order;
+        this.newAddress = order.getAddress() + ", " + order.getZip() + ", " + order.getCity() + order.getState();
         this.status = status;
     }
 
-    public String getPickUpDate() {
-        return pickUpDate;
-    }
-
-    public void setPickUpDate(String pickUpDate) {
-        this.pickUpDate = pickUpDate;
+    public PickUpOrderDomain(CustOrder order, String status, String timeStamp) {
+        this.order = order;
+        this.newAddress = order.getAddress() + ", " + order.getZip() + ", " + order.getCity() + order.getState();
+        this.status = status;
+        this.timeStamp = timeStamp;
     }
     
-    public String getOrderId() {
-        return orderId;
+
+    public CustOrder getOrder() {
+        return order;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrder(CustOrder order) {
+        this.order = order;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getNewAddress() {
+        return newAddress;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getCustName() {
-        return custName;
-    }
-
-    public void setCustName(String custName) {
-        this.custName = custName;
-    }
-
-    public String getCustContact() {
-        return custContact;
-    }
-
-    public void setCustContact(String custContact) {
-        this.custContact = custContact;
-    }
-
-    public String getPickUpTime() {
-        return pickUpTime;
-    }
-
-    public void setPickUpTime(String pickUpTime) {
-        this.pickUpTime = pickUpTime;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPickUpMethod() {
-        return pickUpMethod;
-    }
-
-    public void setPickUpMethod(String pickUpMethod) {
-        this.pickUpMethod = pickUpMethod;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setNewAddress(String newAddress) {
+        this.newAddress = newAddress;
     }
 
     public String getStatus() {
@@ -130,20 +64,21 @@ public class PickUpOrderDomain {
         this.status = status;
     }
 
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.orderId);
-        hash = 71 * hash + Objects.hashCode(this.productName);
-        hash = 71 * hash + this.quantity;
-        hash = 71 * hash + Objects.hashCode(this.custName);
-        hash = 71 * hash + Objects.hashCode(this.custContact);
-        hash = 71 * hash + Objects.hashCode(this.pickUpDate);
-        hash = 71 * hash + Objects.hashCode(this.pickUpTime);
-        hash = 71 * hash + Objects.hashCode(this.address);
-        hash = 71 * hash + Objects.hashCode(this.pickUpMethod);
-        hash = 71 * hash + Objects.hashCode(this.paymentMethod);
-        hash = 71 * hash + Objects.hashCode(this.status);
+        hash = 59 * hash + Objects.hashCode(this.order);
+        hash = 59 * hash + Objects.hashCode(this.newAddress);
+        hash = 59 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -159,37 +94,13 @@ public class PickUpOrderDomain {
             return false;
         }
         final PickUpOrderDomain other = (PickUpOrderDomain) obj;
-        if (this.quantity != other.quantity) {
-            return false;
-        }
-        if (!Objects.equals(this.orderId, other.orderId)) {
-            return false;
-        }
-        if (!Objects.equals(this.productName, other.productName)) {
-            return false;
-        }
-        if (!Objects.equals(this.custName, other.custName)) {
-            return false;
-        }
-        if (!Objects.equals(this.custContact, other.custContact)) {
-            return false;
-        }
-        if (!Objects.equals(this.pickUpDate, other.pickUpDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.pickUpTime, other.pickUpTime)) {
-            return false;
-        }
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        if (!Objects.equals(this.pickUpMethod, other.pickUpMethod)) {
-            return false;
-        }
-        if (!Objects.equals(this.paymentMethod, other.paymentMethod)) {
+        if (!Objects.equals(this.newAddress, other.newAddress)) {
             return false;
         }
         if (!Objects.equals(this.status, other.status)) {
+            return false;
+        }
+        if (!Objects.equals(this.order, other.order)) {
             return false;
         }
         return true;
@@ -197,6 +108,7 @@ public class PickUpOrderDomain {
 
     @Override
     public String toString() {
-        return "PickUpOrderDomain{" + "orderId=" + orderId + ", productName=" + productName + ", quantity=" + quantity + ", custName=" + custName + ", custContact=" + custContact + ", pickUpDate=" + pickUpDate + ", pickUpTime=" + pickUpTime + ", address=" + address + ", pickUpMethod=" + pickUpMethod + ", paymentMethod=" + paymentMethod + ", status=" + status + '}';
-    }         
+        return "PickUpOrderDomain{" + "order=" + order + ", newAddress=" + newAddress + ", status=" + status + '}';
+    }
+    
 }
