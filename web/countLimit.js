@@ -17,6 +17,7 @@ if(document.getElementById('s1').checked){
 }else{
     var max1 = 0;
 }
+
 return max1;
 }
 
