@@ -7,6 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Shopping Cart - Check out</title>
         <style type="text/css">
+            
             <!--
             .container {
                 height: 850px;
